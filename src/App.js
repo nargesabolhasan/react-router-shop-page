@@ -1,54 +1,28 @@
-import CardComponent from "./components/cards";
-import appleWatchImage from "./assets/images/appleWatch.jpg";
-import iphoneImage from "./assets/images/iphone.png";
-import airpodsImage from "./assets/images/airpods.jpg";
-import { Button, CardActions, Container } from "@mui/material";
+import { Container } from "@mui/material";
+import { Route, Routes, useLocation } from "react-router";
 import HeaderComponent from "./components/header";
-import Grid from "@mui/material/Grid2";
-import DrawerComponent from "./components/drawer";
-import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { addItem } from "./store/actions/shopAction";
-
-const cardList = [
-  {
-    id: 1,
-    title: "iphone",
-    caption:
-      " Lizards are a widespread group of squamate reptiles, with over 6 species, ranging across all continents except Antarctica",
-
-    image: iphoneImage,
-  },
-  {
-    id: 2,
-    title: "apple watch",
-    caption:
-      " Lizards are a widespread group of squamate reptiles, with over 6 species, ranging across all continents except Antarctica",
-
-    image: appleWatchImage,
-  },
-  {
-    id: 3,
-    title: "airpods",
-    caption:
-      " Lizards are a widespread group of squamate reptiles, with over 6 species, ranging across all continents except Antarctica",
-
-    image: airpodsImage,
-  },
-];
+import {
+  ADMIN_ROUTE,
+  BASKET_ROUTE,
+  HOME_ROUTE,
+  INFO_ROUTE,
+  LOGIN_ROUTE,
+  SIGNIN_ROUTE,
+} from "./constant/routes";
+import Admin from "./pages/admin";
+import Basket from "./pages/basket";
+import Home from "./pages/home";
+import Login from "./pages/login";
+import SignIn from "./pages/signIn";
+import "./tailwind.css";
+import Information from "./components/information";
+import NotFound from "./pages/notFound";
 
 function App() {
-  const [openDrawer, setOpenDrawer] = useState(false);
-
-  const dispatch = useDispatch();
-
-  const handleShop = (e, cardInfo) => {
-    dispatch(addItem(cardInfo));
-  };
-
-  const toggleDrawer = (newOpen) => () => {
-    setOpenDrawer(newOpen);
-  };
+  const location = useLocation();
+  const isLoginSignin =
+    location.pathname.includes(LOGIN_ROUTE) ||
+    location.pathname.includes(SIGNIN_ROUTE);
 
   return (
     <Container
@@ -59,19 +33,19 @@ function App() {
         justifyContent: "space-between",
       }}
     >
-      <HeaderComponent toggleDrawer={toggleDrawer} />
-      <DrawerComponent toggleDrawer={toggleDrawer} openDrawer={openDrawer} />
-      <Grid container spacing={2}>
-        {cardList.map((item) => (
-          <CardComponent info={item} key={item.id}>
-            <CardActions>
-              <Button size="small" onClick={(e) => handleShop(e, item)}>
-                shop
-              </Button>
-            </CardActions>
-          </CardComponent>
-        ))}
-      </Grid>
+      {!isLoginSignin && <HeaderComponent />}
+      <div className="pt-7">
+        <Routes>
+          <Route path={HOME_ROUTE} element={<Home />} />
+          <Route path={BASKET_ROUTE} element={<Basket />} />
+          <Route path={LOGIN_ROUTE} element={<Login />}>
+            <Route path={ADMIN_ROUTE} element={<Admin />} />
+          </Route>
+          <Route path={SIGNIN_ROUTE} element={<SignIn />} />
+          <Route path={INFO_ROUTE} element={<Information />} />
+          <Route path={"*"} element={<NotFound />} />
+        </Routes>
+      </div>
     </Container>
   );
 }
