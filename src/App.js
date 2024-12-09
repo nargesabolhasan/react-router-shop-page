@@ -15,7 +15,7 @@ import Home from "./pages/home";
 import Login from "./pages/login";
 import SignIn from "./pages/signIn";
 import "./tailwind.css";
-import Information from "./components/information";
+import Information from "./pages/information";
 import NotFound from "./pages/notFound";
 
 function App() {

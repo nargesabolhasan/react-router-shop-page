@@ -2,8 +2,8 @@ import { Box, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router";
-import { cardList } from "../../constant/cardList";
-import HandleBack from "../handleBack";
+import { cardList } from "../constant/cardList";
+import HandleBack from "../components/handleBack";
 
 const Information = () => {
   const params = useParams();
